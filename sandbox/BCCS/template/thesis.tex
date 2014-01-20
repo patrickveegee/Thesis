@@ -1,0 +1,156 @@
+%
+% file: main.tex
+% author: Oscar Benjamin
+% description: This is the master LaTeX file for a thesis for PhD at the
+% University of Bristol. The thesis is to be compiled by running latex (or
+% pdflatex, xelatex, etc.) on this file. This file contains no actual content
+% but does specify the layout options and import the packages used in the rest
+% of the document.
+%
+% UoB guidelines for thesis presentation were found at:
+% http://www.bris.ac.uk/esu/pg/pgr2010-11annex6.html
+% (The link above no longer works and I can't find a new link for the same
+% information - Oscar)
+%
+% Relevant portions of the UoB guidelines are pasted throughout into the
+% comments in this and other tex files (as below).
+%
+% UoB guidelines:
+%
+% The dissertation must be printed on A4 white paper. Paper up to A3 may be used
+% for maps, plans, diagrams and illustrative material. Pages (apart from the
+% preliminary pages) should normally be double-sided.
+%
+\documentclass[a4paper, 11pt, twoside, openright]{book}
+
+% Margins for binding with chapter-pages titlepage, etc on the right. Needs
+% changing if openright is changed (swap lmargin and rmargin)
+\usepackage[lmargin=5cm,rmargin=3cm,tmargin=4.5cm,bmargin=2.5cm]{geometry}
+
+% UoB guidelines:
+%
+% Text should be in double or 1.5 line spacing, and font size should be
+% chosen to ensure clarity and legibility for the main text and for any
+% quotations and footnotes. Margins should allow for eventual hard binding.
+%
+\usepackage{setspace}
+\onehalfspacing
+
+% UoB guidelines:
+%
+% The pages should be numbered consecutively at the bottom centre of the
+% page.
+%
+\usepackage{fancyhdr} % manually control headers and footers
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+% Fills blank pages until next odd-numbered page. Used to emulate single-sided
+% frontmatter. This will work for title, abstract and declaration. Though the
+% contents sections will each start on an odd-numbered page they will
+% spill over onto the even-numbered pages if extending beyond one page
+% (hopefully, this is ok).
+\newcommand{\clearemptydoublepage}{\newpage{\thispagestyle{empty}\cleardoublepage}}
+
+% Use glossaries package to automatically handle abbreviations and create list
+% of abbreviations.
+\usepackage[toc,acronym]{glossaries}
+\makeglossaries
+% Import glossary entries used here.
+\input{frontmatter/glossary}
+% \printglossaries below creates a list of abbreviations. \gls and related
+% commands are then used throughout the text, so that latex can automatically
+% keep track of which abbreviations have already been defined in the text.
+
+% We'll also have an appendix. Appendix commands in the main document below.
+\usepackage{appendix}
+
+% Other packages
+\usepackage{graphicx} % images (needed for title page)
+\usepackage{hyperref} % adds links to all refs
+
+% The import command enables each chapter tex file to use relative paths when
+% accessing supplementary files. For example, to include
+% chapters/brewing/images/figure1.png from capters/brewing/brewing.tex we can
+% use
+% \includegraphics{images/figure1}
+% instead of
+% \includegraphics{chapters/brewing/images/figure1}
+\usepackage{import}
+
+% Add other packages needed for chapters here. For example:
+\usepackage{amsmath}
+
+
+\begin{document}
+
+    % UoB guidlines:
+    %
+    % Preliminary pages
+    % 
+    % The five preliminary pages must be the Title Page, Abstract, Dedication
+    % and Acknowledgements, AuthorÎéÎ÷s Declaration and Table of Contents.
+    % These should be single-sided.
+    % 
+    % Table of contents, list of tables and illustrative material
+    % 
+    % The table of contents must list, with page numbers, all chapters,
+    % sections and subsections, the list of references, bibliography, list of
+    % abbreviations and appendices. The list of tables and illustrations
+    % should follow the table of contents, listing with page numbers the
+    % tables, photographs, diagrams, etc., in the order in which they appear
+    % in the text.
+    % 
+    \frontmatter
+        \cfoot{}
+        \input{frontmatter/title}
+        \clearemptydoublepage
+        \input{frontmatter/abstract}
+        \clearemptydoublepage
+        \input{frontmatter/dedication}
+        \clearemptydoublepage
+        \input{frontmatter/declaration}
+        \clearemptydoublepage
+        \tableofcontents
+        \clearemptydoublepage
+        \listoftables
+        \clearemptydoublepage
+        \listoffigures
+        \clearemptydoublepage
+        \printglossaries
+        \clearemptydoublepage
+
+    % The bulk of the document is delegated to these chapter files in
+    % subdirectories.
+    \mainmatter
+
+        \glsresetall
+        \import{chapters/introduction/}{introduction.tex}
+        \clearemptydoublepage
+
+        \glsresetall
+        \import{chapters/brewing/}{brewing.tex}
+        \clearemptydoublepage
+
+        % And the appendix goes here
+        \appendix
+        \appendixpage
+        \addappheadtotoc
+        \import{chapters/appendices/}{appendices}
+        \clearemptydoublepage
+
+    % Aparrently the guidelines don't say anything about citations or
+    % bibliography styles so I guess we can use anything.
+    \backmatter
+        \bibliographystyle{alpha}
+        \refstepcounter{chapter}
+        \addcontentsline{toc}{chapter}{\bibname}
+        \bibliography{thesis}
+
+\end{document}
+
